@@ -1,7 +1,7 @@
 # Playstation Store Coupon Toy
 
 ## Idea
-Enter a coupon code as a seed,, then count down the number from there until a working coupon code is found.
+Enter a coupon code as a seed, then count down the number from there until a working coupon code is found.
 
 ## Reality
 I'm pretty sure they have advanced checksums and such. Even going through thousands of codes, your odds of finding a working one are probably about that of a homeopathic remedy curing your cancer.
