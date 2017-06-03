@@ -1,11 +1,23 @@
 // keep a window scoped object to terminate script once we find a valid coupon
 var validCouponFound = false;
+var pauseState = false;
 
-function updateForm() {
-	// decrement the coupon code by 1
-	document.getElementById('discountCode').value = document.getElementById('discountCode').value - 1;
-	// simulate a click on the submit button
-	document.forms[1].lastElementChild.click();
+function updateForm(increment = true) {
+	// are we incrementing? If unspecified, then yes
+	if(increment) {
+		// decrement the coupon code by 1
+		document.getElementById('discountCode').value = document.getElementById('discountCode').value - 1;
+	}
+	// is last applyCount task still running?
+	if(!gInputGatekeeper._getTaskById('applyCoupon')) {
+		// no, click the button
+		document.forms[1].lastElementChild.click();
+	} else {
+		// yes, wait a second before clicking the button
+		setTimeout(1000, function() {
+			document.forms[1].lastElementChild.click();
+		});
+	}
 }
 
 // store handle to XHR request open
@@ -43,8 +55,10 @@ XMLHttpRequest.prototype.open = function() {
 					}
 				}
 			}
-			// one of the conditions wasn't met, let's update the form and try again
-			updateForm();
+			// one of the conditions wasn't met, let's update the form and try again, unless we're paused
+			if(!pauseState) {
+				updateForm();
+			}
 		}
 	});
 	// apply original XHR open
